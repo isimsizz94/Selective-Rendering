@@ -44,6 +44,11 @@ export const render = (toElement, fromElement) => {
     }
 
     mergeAttributes(toElement, fromElement);
+    if (toElement.nodeType !== fromElement.nodeType || toElement.tagName !== fromElement.tagName) {
+        toElement.parentNode.replaceChild(fromElement.cloneNode(true), toElement);
+        return;
+    }
+
 
     const toChildNodes = [].slice.call(toElement.childNodes);
     const fromChildNodes = [].slice.call(fromElement.childNodes);
