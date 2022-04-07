@@ -38,12 +38,11 @@ const mergeTextNode = (toNode, fromNode) => {
 
 export const render = (toElement, fromElement) => {
     // toElement.outerHTML = fromElement.outerHTML; :)
-
-    mergeAttributes(toElement, fromElement);
-
     while (toElement.childNodes.length > fromElement.childNodes.length) {
         toElement.lastChild.remove();
     }
+
+    mergeAttributes(toElement, fromElement);
 
     const toChildNodes = [].slice.call(toElement.childNodes);
     const fromChildNodes = [].slice.call(fromElement.childNodes);
@@ -56,14 +55,19 @@ export const render = (toElement, fromElement) => {
             toElement.appendChild(fromChildNode.cloneNode(true));
             continue;
         }
-
         if (toChildNode.nodeType !== fromChildNode.nodeType) {
             toChildNode.remove();
             toElement.appendChild(fromChildNode.cloneNode(true));
             continue;
         }
 
+        if(toChildNode.attributes) mergeAttributes(toChildNode, fromChildNode);
+
         if (toChildNode.nodeName === "#text") mergeTextNode(toChildNode, fromChildNode);
+
+        if (toChildNode.value !== fromChildNode.value) { // input cases
+            toChildNode.value = fromChildNode.value;
+        }
 
         if (fromChildNode.childNodes.length || toChildNode.childNodes.length) {
             render(toChildNode, fromChildNode);
