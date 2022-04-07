@@ -38,6 +38,7 @@ const mergeTextNode = (toNode, fromNode) => {
 
 export const render = (toElement, fromElement) => {
     // toElement.outerHTML = fromElement.outerHTML; :)
+
     while (toElement.childNodes.length > fromElement.childNodes.length) {
         toElement.lastChild.remove();
     }
@@ -61,7 +62,7 @@ export const render = (toElement, fromElement) => {
             continue;
         }
 
-        if(toChildNode.attributes) mergeAttributes(toChildNode, fromChildNode);
+        if (toChildNode.attributes) mergeAttributes(toChildNode, fromChildNode);
 
         if (toChildNode.nodeName === "#text") mergeTextNode(toChildNode, fromChildNode);
 
