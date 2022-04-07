@@ -56,7 +56,8 @@ export const render = (toElement, fromElement) => {
             toElement.appendChild(fromChildNode.cloneNode(true));
             continue;
         }
-        if (toChildNode.nodeType !== fromChildNode.nodeType) {
+
+        if (toChildNode.nodeType !== fromChildNode.nodeType || toChildNode.tagName !== fromChildNode.tagName) {
             toChildNode.remove();
             toElement.appendChild(fromChildNode.cloneNode(true));
             continue;
