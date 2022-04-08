@@ -39,16 +39,20 @@ const mergeTextNode = (toNode, fromNode) => {
 export const render = (toElement, fromElement) => {
     // toElement.outerHTML = fromElement.outerHTML; :)
 
-    while (toElement.childNodes.length > fromElement.childNodes.length) {
-        toElement.lastChild.remove();
+    {
+        const fromElementNodesCount = fromElement.childNodes.length;
+        const toElementNodesCount = toElement.childNodes.length;
+        for (let i = fromElementNodesCount; i < toElementNodesCount; i--) {
+            toElement.lastChild.remove();
+        }
     }
 
-    mergeAttributes(toElement, fromElement);
     if (toElement.nodeType !== fromElement.nodeType || toElement.tagName !== fromElement.tagName) {
         toElement.parentNode.replaceChild(fromElement.cloneNode(true), toElement);
         return;
     }
 
+    mergeAttributes(toElement, fromElement);
 
     const toChildNodes = [].slice.call(toElement.childNodes);
     const fromChildNodes = [].slice.call(fromElement.childNodes);
@@ -63,8 +67,7 @@ export const render = (toElement, fromElement) => {
         }
 
         if (toChildNode.nodeType !== fromChildNode.nodeType || toChildNode.tagName !== fromChildNode.tagName) {
-            toChildNode.remove();
-            toElement.appendChild(fromChildNode.cloneNode(true));
+            toElement.replaceChild(fromChildNode.cloneNode(true), toChildNode);
             continue;
         }
 
@@ -72,11 +75,7 @@ export const render = (toElement, fromElement) => {
 
         if (toChildNode.nodeName === "#text") mergeTextNode(toChildNode, fromChildNode);
 
-        if (toChildNode.value !== fromChildNode.value) { // input cases
-            toChildNode.value = fromChildNode.value;
-        }
-
-        if (fromChildNode.childNodes.length || toChildNode.childNodes.length) {
+        if (toChildNode.childNodes.length || fromChildNode.childNodes.length) {
             render(toChildNode, fromChildNode);
         }
     }
