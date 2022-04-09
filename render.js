@@ -5,15 +5,15 @@ const mergeAttributes = (toElement, fromElement) => {
     for (let i = 0; i < toElementAttrs.length; i++) { // remove redundant attr
         const attr = toElementAttrs[i];
 
-        if (!fromElementAttrs.getNamedItem(attr.name)) {
-            toElementAttrs.removeNamedItem(attr.name);
+        if (fromElement.getAttribute(attr.name) === null) {
+            toElement.removeAttribute(attr.name);
         }
     }
 
     for (let i = 0; i < fromElementAttrs.length; i++) { // create attr if need it
         const attr = fromElementAttrs[i];
 
-        if (!toElementAttrs.getNamedItem(attr.name)) {
+        if (toElement.getAttribute(attr.name) === null) {
             toElement.setAttribute(attr.name, attr.value);
         }
     }
@@ -21,10 +21,11 @@ const mergeAttributes = (toElement, fromElement) => {
     for (let i = 0; i < toElementAttrs.length; i++) { // update attr value
         const attr = toElementAttrs[i];
 
-        const attr1Value = toElementAttrs.getNamedItem(attr.name).value;
-        const attr2Value = fromElementAttrs.getNamedItem(attr.name).value;
+        const attr1Value = toElement.getAttribute(attr.name);
+        const attr2Value = fromElement.getAttribute(attr.name);
 
         if (attr1Value !== attr2Value) {
+            console.log(attr1Value, attr2Value);
             toElement.setAttribute(attr.name, attr2Value);
         }
     }
