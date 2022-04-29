@@ -20,11 +20,12 @@ document.querySelector(".selective-render").onclick = () => {
 
     const start = performance.now();
     render(persons[1], persons[0]);
+    const renderTime = subtract(performance.now(), start);
+
     const startHtmlRender = performance.now();
 
     setTimeout(() => {
         const now = performance.now();
-        const renderTime = subtract(now, start);
         const domRenderTime = subtract(now, startHtmlRender);
 
         outTime([
@@ -40,11 +41,12 @@ document.querySelector(".outerhtml-render").onclick = () => {
 
     const start = performance.now();
     persons[1].outerHTML = persons[0].outerHTML;
+    const renderTime = subtract(performance.now(), start);
+
     const startHtmlRender = performance.now();
 
     setTimeout(() => {
         const now = performance.now();
-        const renderTime = subtract(now, start);
         const domRenderTime = subtract(now, startHtmlRender);
 
         outTime([
