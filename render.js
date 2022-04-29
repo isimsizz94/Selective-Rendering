@@ -2,7 +2,7 @@ const mergeAttributes = (toElement, fromElement) => {
     const toElementAttrs = toElement.attributes;
     const fromElementAttrs = fromElement.attributes;
 
-    for (let i = 0; i < toElementAttrs.length; i++) { // remove redundant attr
+    for (let i = 0; i < toElementAttrs.length; i++) { // remove unnecessary attr
         const attr = toElementAttrs[i];
 
         if (fromElement.getAttribute(attr.name) === null) {
@@ -38,7 +38,6 @@ const mergeTextNode = (toNode, fromNode) => {
 
 export const render = (toElement, fromElement) => {
     // toElement.outerHTML = fromElement.outerHTML; :)
-
     if (toElement.nodeType !== fromElement.nodeType || toElement.tagName !== fromElement.tagName) {
         toElement.parentNode.replaceChild(fromElement.cloneNode(true), toElement);
         return;
